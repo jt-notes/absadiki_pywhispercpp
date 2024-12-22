@@ -105,84 +105,60 @@ usage: pwcpp [-h] [-m MODEL] [--version] [--processors PROCESSORS] [-otxt] [-ovt
              [--length_penalty LENGTH_PENALTY] [--temperature_inc TEMPERATURE_INC] [--entropy_thold ENTROPY_THOLD]
              [--logprob_thold LOGPROB_THOLD] [--no_speech_thold NO_SPEECH_THOLD] [--greedy GREEDY] [--beam_search BEAM_SEARCH]
              media_file [media_file ...]
-
-positional arguments:
-  media_file            The path of the media file or a list of filesseparated by space
-
-options:
-  -h, --help            show this help message and exit
-  -m MODEL, --model MODEL
-                        Path to the `ggml` model, or just the model name
-  --version             show program's version number and exit
-  --processors PROCESSORS
-                        number of processors to use during computation
-  -otxt, --output-txt   output result in a text file
-  -ovtt, --output-vtt   output result in a vtt file
-  -osrt, --output-srt   output result in a srt file
-  -ocsv, --output-csv   output result in a CSV file
-  --strategy STRATEGY   Available sampling strategiesGreefyDecoder -> 0BeamSearchDecoder -> 1
-  --n_threads N_THREADS
-                        Number of threads to allocate for the inferencedefault to min(4, available hardware_concurrency)
-  --n_max_text_ctx N_MAX_TEXT_CTX
-                        max tokens to use from past text as prompt for the decoder
-  --offset_ms OFFSET_MS
-                        start offset in ms
-  --duration_ms DURATION_MS
-                        audio duration to process in ms
-  --translate TRANSLATE
-                        whether to translate the audio to English
-  --no_context NO_CONTEXT
-                        do not use past transcription (if any) as initial prompt for the decoder
-  --single_segment SINGLE_SEGMENT
-                        force single segment output (useful for streaming)
-  --print_special PRINT_SPECIAL
-                        print special tokens (e.g. <SOT>, <EOT>, <BEG>, etc.)
-  --print_progress PRINT_PROGRESS
-                        print progress information
-  --print_realtime PRINT_REALTIME
-                        print results from within whisper.cpp (avoid it, use callback instead)
-  --print_timestamps PRINT_TIMESTAMPS
-                        print timestamps for each text segment when printing realtime
-  --token_timestamps TOKEN_TIMESTAMPS
-                        enable token-level timestamps
-  --thold_pt THOLD_PT   timestamp token probability threshold (~0.01)
-  --thold_ptsum THOLD_PTSUM
-                        timestamp token sum probability threshold (~0.01)
-  --max_len MAX_LEN     max segment length in characters
-  --split_on_word SPLIT_ON_WORD
-                        split on word rather than on token (when used with max_len)
-  --max_tokens MAX_TOKENS
-                        max tokens per segment (0 = no limit)
-  --audio_ctx AUDIO_CTX
-                        overwrite the audio context size (0 = use default)
-  --prompt_tokens PROMPT_TOKENS
-                        tokens to provide to the whisper decoder as initial prompt
-  --prompt_n_tokens PROMPT_N_TOKENS
-                        tokens to provide to the whisper decoder as initial prompt
-  --language LANGUAGE   for auto-detection, set to None, "" or "auto"
-  --suppress_blank SUPPRESS_BLANK
-                        common decoding parameters
-  --suppress_non_speech_tokens SUPPRESS_NON_SPEECH_TOKENS
-                        common decoding parameters
-  --temperature TEMPERATURE
-                        initial decoding temperature
-  --max_initial_ts MAX_INITIAL_TS
-                        max_initial_ts
-  --length_penalty LENGTH_PENALTY
-                        length_penalty
-  --temperature_inc TEMPERATURE_INC
-                        temperature_inc
-  --entropy_thold ENTROPY_THOLD
-                        similar to OpenAI's "compression_ratio_threshold"
-  --logprob_thold LOGPROB_THOLD
-                        logprob_thold
-  --no_speech_thold NO_SPEECH_THOLD
-                        no_speech_thold
-  --greedy GREEDY       greedy
-  --beam_search BEAM_SEARCH
-                        beam_search
-
 ```
+
+## positional arguments
+
+|arg|description|
+|-|-|
+|media_file|The path of the media file or a list of filesseparated by space|
+| --version |show program's version number and exit|
+
+
+## positional arguments (two options)
+
+|option 1|option 2|description|
+|-|-|-------------------------|
+| -h | --help | show this help message and exit|
+| -m MODEL | --model MODEL | Path to the `ggml` model | or just the model name|
+| --processors | PROCESSORS | number of processors to use during computation|
+| -otxt | --output-txt | output result in a text file|
+| -ovtt | --output-vtt | output result in a vtt file|
+| -osrt | --output-srt | output result in a srt file|
+| -ocsv | --output-csv | output result in a CSV file|
+| --strategy | STRATEGY | Available sampling strategiesGreefyDecoder -> 0BeamSearchDecoder -> 1|
+|--n_threads | N_THREADS | Number of threads to allocate for the inferencedefault to min(4, available hardware_concurrency)|
+| --n_max_text_ctx | N_MAX_TEXT_CTX | max tokens to use from past text as prompt for the decoder|
+| --offset_ms | OFFSET_MS | start offset in ms|
+| --duration_ms | DURATION_MS | audio duration to process in ms|
+| --translate | TRANSLATE | whether to translate the audio to English|
+| --no_context | NO_CONTEXT | do not use past transcription (if any) as initial prompt for the decoder|
+| --single_segment | SINGLE_SEGMENT | force single segment output (useful for streaming)|
+| --print_special | PRINT_SPECIAL | print special tokens (e.g. <SOT>, <EOT>, <BEG>, etc.)|
+| --print_progress | PRINT_PROGRESS | print progress information|
+| --print_realtime | PRINT_REALTIME | print results from within whisper.cpp (avoid it, use callback instead)|
+| --print_timestamps | PRINT_TIMESTAMPS | print timestamps for each text segment when printing realtime|
+| --token_timestamps | TOKEN_TIMESTAMPS | enable token-level timestamps|
+| --thold_pt | THOLD_PT | timestamp token probability threshold (~0.01)|
+| --thold_ptsum | THOLD_PTSUM | timestamp token sum probability threshold (~0.01)|
+| --max_len | MAX_LEN | max segment length in characters|
+| --split_on_word | SPLIT_ON_WORD | split on word rather than on token (when used with max_len)|
+| --max_tokens | MAX_TOKENS | max tokens per segment (0 = no limit)|
+| --audio_ctx | AUDIO_CTX | overwrite the audio context size (0 = use default)|
+| --prompt_tokens | PROMPT_TOKENS | tokens to provide to the whisper decoder as initial prompt|
+| --prompt_n_tokens | PROMPT_N_TOKENS | tokens to provide to the whisper decoder as initial prompt|
+| --language | LANGUAGE | for auto-detection, set to None, "" or "auto"|
+| --suppress_blank | SUPPRESS_BLANK | common decoding parameters|
+| --suppress_non_speech_tokens | SUPPRESS_NON_SPEECH_TOKENS | common decoding parameters|
+| --temperature | TEMPERATURE | initial decoding temperature|
+| --max_initial_ts | MAX_INITIAL_TS | max_initial_ts|
+| --length_penalty | LENGTH_PENALTY | length_penalty|
+| --temperature_inc | TEMPERATURE_INC | temperature_inc|
+| --entropy_thold | ENTROPY_THOLD | similar to OpenAI's "compression_ratio_threshold"|
+| --logprob_thold | LOGPROB_THOLD | logprob_thold|
+| --no_speech_thold | NO_SPEECH_THOLD | no_speech_thold|
+| --greedy | GREEDY | greedy|
+| --beam_search | BEAM_SEARCH | beam_search
 
 ## Recording 
 Another simple [example](https://github.com/absadiki/pywhispercpp/blob/main/pywhispercpp/examples/recording.py) to transcribe your own recordings.
