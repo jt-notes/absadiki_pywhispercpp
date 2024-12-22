@@ -40,8 +40,6 @@ If you want to use the examples, you will need to install extra dependencies
 pip install pywhispercpp[examples]
 ```
 
-
-
 ## Alternative source install
 
 ### You can install the latest dev version from GitHub:
@@ -53,7 +51,7 @@ pip install .
 ```
 
 
-# Quick start
+## Quick start
 
 ```python
 from pywhispercpp.model import Model
@@ -79,18 +77,17 @@ segments = model.transcribe('file.mp3', new_segment_callback=print)
 * The `transcribe` function accepts any media file (audio/video), in any format.
 * Check the [Model](https://absadiki.github.io/pywhispercpp/#pywhispercpp.model.Model) class documentation for more details.
 
-# Examples
+## examples/main.py
+This should give you a command line interface (CLI).
 
-The [examples folder](https://github.com/absadiki/pywhispercpp/tree/main/pywhispercpp/examples) contains several examples inspired from the original [whisper.cpp/examples](https://github.com/ggerganov/whisper.cpp/tree/master/examples).
+* [examples/main.py](https://github.com/absadiki/pywhispercpp/blob/main/pywhispercpp/examples/main.py)
 
-## Main
-Just a straightforward example with a simple Command Line Interface. 
-
-Check the source code [here](https://github.com/absadiki/pywhispercpp/blob/main/pywhispercpp/examples/main.py), or use the CLI as follows:
+view in bash:
 
 ```shell
 pwcpp file.wav -m base --output-srt --print_realtime true
 ```
+
 Run ```pwcpp --help``` to get the help message
 
 ```shell
@@ -107,15 +104,18 @@ usage: pwcpp [-h] [-m MODEL] [--version] [--processors PROCESSORS] [-otxt] [-ovt
              media_file [media_file ...]
 ```
 
-## positional arguments
+### positional arguments
 
+#### one option
 |arg|description|
 |-|-|
 |media_file|The path of the media file or a list of filesseparated by space|
 | --version |show program's version number and exit|
 
 
-## positional arguments (two options)
+### positional arguments
+
+#### two options
 
 |option 1|option 2|description|
 |-|-|-------------------------|
@@ -160,47 +160,44 @@ usage: pwcpp [-h] [-m MODEL] [--version] [--processors PROCESSORS] [-otxt] [-ovt
 | --greedy | GREEDY | greedy|
 | --beam_search | BEAM_SEARCH | beam_search
 
-## Recording 
-Another simple [example](https://github.com/absadiki/pywhispercpp/blob/main/pywhispercpp/examples/recording.py) to transcribe your own recordings.
+## timestamps 
+From https://github.com/absadiki/pywhispercpp/blob/main/pywhispercpp/utils.py
 
-You can use it from Python as follows:
+This code allows for use of timestamps
 
-```python
-from pywhispercpp.examples.recording import Recording
-
-myrec = Recording(5)
-myrec.start()
 ```
 
-Or from the command line:
-    
-```shell
-$ pwcpp-recording --help
+def to_timestamp(t: int, separator=',') -> str:
+    """
+    376 -> 00:00:03,760
+    1344 -> 00:00:13,440
 
-usage: pwcpp-recording [-h] [-m MODEL] duration
+    Implementation from `whisper.cpp/examples/main`
 
-positional arguments:
-  duration              duration in seconds
+    :param t: input time from whisper timestamps
+    :param separator: seprator between seconds and milliseconds
+    :return: time representation in hh: mm: ss[separator]ms
+    """
+    # logic exactly from whisper.cpp
 
-options:
-  -h, --help            show this help message and exit
-  -m MODEL, --model MODEL
-                        Whisper.cpp model, default to tiny.en
+    msec = t * 10
+    hr = msec // (1000 * 60 * 60)
+    msec = msec - hr * (1000 * 60 * 60)
+    min = msec // (1000 * 60)
+    msec = msec - min * (1000 * 60)
+    sec = msec // 1000
+    msec = msec - sec * 1000
+    return f"{int(hr):02,.0f}:{int(min):02,.0f}:{int(sec):02,.0f}{separator}{int(msec):03,.0f}"
+
+
 ```
 
 
 
-# Advanced usage
-* First check the [API documentation](https://absadiki.github.io/pywhispercpp/) for more advanced usage.
-
-* If you are a more experienced user, you can access the [C-Style API](https://github.com/ggerganov/whisper.cpp/blob/master/whisper.h) directly, almost all functions from `whisper.h`
-are exposed with the binding module `_pywhispercpp`.
-
-```python
-import _pywhispercpp as pwcpp
-
-ctx = pwcpp.whisper_init_from_file('path/to/ggml/model')
-```
+# Resources
+* absadiki,[PyWhisperCpp API Reference](https://absadiki.github.io/pywhispercpp/), https://absadiki.github.io/pywhispercpp/
+* [pywhispercpp/examples](https://github.com/absadiki/pywhispercpp/tree/main/pywhispercpp/examples), https://github.com/absadiki/pywhispercpp/tree/main/pywhispercpp/examples
+* [whisper.cpp/examples](https://github.com/ggerganov/whisper.cpp/tree/master/examples), https://github.com/ggerganov/whisper.cpp/tree/master/examples
 
 # Issues
 Please contribute to [Absadiki's](https://github.com/absadiki/pywhispercpp/issues) as this is simply an exploration of that code.
